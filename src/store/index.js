@@ -6,7 +6,8 @@ import Helper from "../helper";
 Vue.use(Vuex);
 const getDefaultState = () => {
 	return {
-		roomGlobalInfo: null // 播放界面全局对象
+		rtcEngine: null, // 房间信息
+		currLayoutType: null // 视频布局信息
 	};
 };
 export default new Vuex.Store({

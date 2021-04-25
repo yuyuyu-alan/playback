@@ -1,31 +1,34 @@
 <template>
   <div>
-    <Player/>
+    <Player />
   </div>
 </template>
 
 <script>
 import CloudHubPlayback from "cloudhub-playback-sdk";
-import Player from "@/components/room/Player"
+import Player from "@/components/room/Player";
+import StreamController from "@/controllers/StreamController";
+import RoomController from "@/controllers/RoomController"
 export default {
   components: {
-    Player
+    Player,
   },
   data() {
-    return {
-    };
+    return {};
+  },
+  mounted() {
+    this.init();
   },
   methods: {
     init() {
       if (CloudHubPlayback) {
-        //开始进入回放
         CloudHubPlayback.startPlay(() => {
           // 房间号  CloudHubPlayback.getChannelId()
           this.$store.commit("setData", {
-            roomGlobalInfo: {
-              rtcEngine: CloudHubPlayback.getEngine(),
-            }
+            rtcEngine: CloudHubPlayback.getEngine(),
           });
+          StreamController.listen();
+          RoomController.listen();
         });
       }
     },
