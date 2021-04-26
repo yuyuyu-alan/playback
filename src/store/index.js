@@ -37,6 +37,8 @@ export default new Vuex.Store({
 	state: Helper.deepCopy(getDefaultState()),
 	mutations: {
 		setData(state, obj) {
+			console.log(`%c[ < change===== >------${ JSON.stringify( obj ) } ]` , 'color: aqua;background-color: black;font-size: 16px');
+			
 			for (let i in obj) {
 				state[i] = obj[i];
 			}

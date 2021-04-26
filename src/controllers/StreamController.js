@@ -23,32 +23,22 @@ class StreamController {
   initStream() {
     return new Promise((resolve, reject) => {
       const { teacher } = store.state.Teacher;
-      if (teacher.hasOwnProperty("stream")) {
-        this.playVideo("teacher-player", teacher.stream);
-        resolve();
-        return false;
-      }
-      const StreamConfig = {
-        uid: teacher.uid,
-        type: "video",
-        sourceID: "default_source_id",
-      };
-      const stream = window.CloudHubRTC.createStream(StreamConfig);
-      store.commit("Teacher/setProperty", { key: "stream", value: stream });
-      stream.init({}, (err) => {
-        err && reject(err);
-        this.setVideoProfile(stream, ConstantController.VIDEO_PROFILE.BIG);
-        this.playVideo("teacher-player", stream);
-        resolve();
-      });
+      const { uid, streamType } = teacher
+      setTimeout(() => {
+        let videoEl = document.getElementById('teacher-player')
+        this.playVideo(uid, videoEl, streamType);
+      }, 100)
+      resolve();
+      return false;
+
     });
   }
 
   /** 播放视频 */
-  playVideo(uid, view, stream, type) {
-    console.log('--++++++++++++++++~~~~~~~~~~~-', uid, view, stream, type)
-    if (!stream || !view) return false;
-    stream.setupRemoteVideo(uid, type, view);
+  playVideo(uid, view, type) {
+    const { rtcEngine } = store.state;
+    if (!view) return false;
+    rtcEngine.setupRemoteVideo(uid, type, view);
   }
 
   /** 播放音频 */
@@ -72,10 +62,12 @@ class StreamController {
     const { rtcEngine } = store.state;
     rtcEngine.on("onRemoteVideoStateChanged", (event) => {
       // LogController.printLog('远端流添加', event);
-	  const { state, mediaType, uid, streamId } = event;
-      let videoEl = document.getElementById('teacher-player')
-      this.playVideo(uid,videoEl , rtcEngine, mediaType);
-      console.log("======接收到流数据=", event);
+      const { state, mediaType, uid, streamId } = event;
+
+      setTimeout(() => {
+        let videoEl = document.getElementById('teacher-player')
+        this.playVideo(uid, videoEl, mediaType);
+      }, 100)
       // const {Student = {}} = store.state;
       // const {items: students} = Student;
       // const {stream} = event;

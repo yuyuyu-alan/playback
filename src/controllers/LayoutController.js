@@ -94,6 +94,8 @@ class LayoutController {
 
 	// todo 屏幕大小变化时更改相应视图的大小
 	watchWindowResize() {
+		console.log(`%c[ < ppp-- >------ ]` , 'color: aqua;background-color: black;font-size: 16px');
+		
 		const {currLayoutType, isTwoFocus, whiteboardStatus, mediaInfo = {}, isPlayMedia} = store.state;
 		if (!currLayoutType) return;
 		if (isTwoFocus) {

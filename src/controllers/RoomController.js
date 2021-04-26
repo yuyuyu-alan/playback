@@ -41,7 +41,13 @@ class RoomController {
         //发送奖杯
         EventBus.$emit("trophy", data);
       } else if (msgName === "ChangeLayout") {
-        console.log(`%c[ < 改变布局 >------${ msgName} ]` , 'color: aqua;background-color: black;font-size: 16px');
+
+        store.commit('setData', {
+          roomType: Number(event.data.layout),
+          currLayoutType: Room.getRoomDefaultLayoutType(event.data.layout)
+        });
+
+        console.log(`%c[ < 改变布局 >------${ JSON.stringify(event)} ]` , 'color: aqua;background-color: black;font-size: 16px');
         
         // LogController.printLog('ChangeLayout', data);
         //改变布局
@@ -121,51 +127,24 @@ class RoomController {
     });
   }
 
-  /** 用户进入房间 */
-  listenRoomUserJoined() {
-    const { rtcEngine } = store.state;
-    rtcEngine.on("onUserJoined", (event) => {
-      console.log("用户进入房间===", event);
-      const { Student = {}, roomStatus } = store.state;
-      const { items: students = [] } = Student;
-      const { properties } = event;
-      // // LogController.printLog("用户加入", event);
-      if (properties.role === ConstantController.ROOM_ROLE.TEACHER) {
-        // 老师进入
-        store.commit("Teacher/setTeacher", properties);
-      } else if (properties.role === ConstantController.ROOM_ROLE.STUDENT) {
-        //查看是否之前进入过
-        if (students.some((item) => item.uid === properties.uid)) {
-          const index = students.findIndex(
-            (item) => item.uid === properties.uid
-          );
-          for (let key in properties) {
-            store.commit("Student/setProperty", {
-              index,
-              key,
-              value: properties[key],
-            });
-          }
-          store.commit("Student/setProperty", {
-            index,
-            key: "isShow",
-            value: true,
-          });
-        } else {
-          store.commit("Student/setItem", new StudentModel(properties));
-        }
-        // //如果上课后 进入的学生打开视频
-        // if (roomStatus === ConstantController.ROOM_STATUS.DOING) {
-        //   UserController.changeAudioStatus(
-        //     properties.uid,
-        //     ConstantController.STREAM_TYPE.VIDEO
-        //   );
-        // }
-      } else if (properties.role === ConstantController.ROOM_ROLE.OBSERVER) {
-        store.commit("Observer/setItem", properties);
-      }
-    });
-  }
+ /** 用户进入房间 */
+ listenRoomUserJoined() {
+  const { rtcEngine } = store.state;
+  rtcEngine.on("onUserJoined", (event) => {
+    console.log("用户进入房间===", event);
+    const { properties } = event;
+    if (properties.role === ConstantController.ROOM_ROLE.TEACHER) {
+      // 老师进入
+      store.commit("Teacher/setTeacher", properties);
+    } else if (properties.role === ConstantController.ROOM_ROLE.STUDENT) {
+      // 学生
+      store.commit("Student/setItem", new StudentModel(properties));
+    } else if (properties.role === ConstantController.ROOM_ROLE.OBSERVER) {
+      // 
+      store.commit("Observer/setItem", properties);
+    }
+  });
+}
 
   /** 用户离开房间*/
   listenRoomUserLeaved() {

@@ -1,6 +1,7 @@
 <template>
   <div
     class="player"
+    id="hahah"
     :style="{
       'border-radius': isFocus && currLayoutType === 'default' ? 0 : '10px',
     }"

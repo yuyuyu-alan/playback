@@ -24,9 +24,12 @@ export default {
   },
   mounted() {
     this.init();
+
   },
   watch: {
-    currLayoutType: function () {
+    currLayoutType: function (e) {
+      console.log(`%c[ < bisdcdjscd-------- >------${ JSON.stringify( e ) } ]` , 'color: aqua;background-color: black;font-size: 16px');
+      
 			LayoutController.watchWindowResize();
 		},
   },
@@ -34,12 +37,16 @@ export default {
     init() {
       if (CloudHubPlayback) {
         CloudHubPlayback.startPlay((room) => {
+          console.log('==================================',room, 'color: yelllow')
           // 房间号  CloudHubPlayback.getChannelId()
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),
             roomType: Number(room.roomlayout),
 						currLayoutType: Room.getRoomDefaultLayoutType(room.roomlayout)
           });
+          	LayoutController.watchWindowResize();
+
+          
          
           StreamController.listen();
           RoomController.listen();
