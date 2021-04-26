@@ -25,8 +25,8 @@ class UserController {
 
 	/** 监听信令添加*/
 	listenPubMsg() {
-		const {roomClient} = store.state;
-		roomClient.on('onPubMsg', event => {
+		const {rtcEngine} = store.state;
+		rtcEngine.on('onPubMsg', event => {
 			let {id, data} = event;
 			if (id === 'ToggleWindow') {
 				this.toggleWindowAction(data.user);
@@ -36,8 +36,8 @@ class UserController {
 
 	/** 监听信令删除*/
 	listenDelMsg() {
-		const {roomClient} = store.state;
-		roomClient.on('onDelMsg', event => {
+		const {rtcEngine} = store.state;
+		rtcEngine.on('onDelMsg', event => {
 			let {id, data} = event;
 			if (id === 'ToggleWindow') {
 				this.resetTeacherWindow(data.isNextSwitch);
@@ -62,8 +62,8 @@ class UserController {
 	}
 
 	setClientRole(type = 'audience') {
-		const {roomClient} = store.state;
-		roomClient.setClientRole(type);
+		const {rtcEngine} = store.state;
+		rtcEngine.setClientRole(type);
 	}
 
 	toggleWindow(userId) {
