@@ -9,6 +9,7 @@
 import CloudHubPlayback from "cloudhub-playback-sdk";
 import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController"
+import LayoutController from "../../controllers/LayoutController";
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
 import Room from "../models/room/Room";
@@ -22,6 +23,11 @@ export default {
   },
   mounted() {
     this.init();
+  },
+  watch: {
+    currLayoutType: function () {
+			LayoutController.watchWindowResize();
+		},
   },
   methods: {
     init() {
