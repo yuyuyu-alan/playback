@@ -9,8 +9,8 @@
 import CloudHubPlayback from "cloudhub-playback-sdk";
 import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController"
-import TeacherPlayer from "../../components/room/TeacherPlayer";
-import StudentPlayer from "../../components/room/StudentPlayer";
+import TeacherPlayer from "../components/room/TeacherPlayer";
+import StudentPlayer from "../components/room/StudentPlayer";
 export default {
   components: {
     TeacherPlayer,
@@ -39,15 +39,14 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-@import '../../assets/css/app.styl';
+<style lang="stylus" scoped>
+@import '../assets/css/app.styl';
 
-.room-show {
-  position: relative;
-  padding-top: 60px;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  box-sizing: border-box;
-}
+.room-show 
+  position relative
+  padding-top 60px
+  width 100vw
+  height 100vh
+  overflow hidden
+  box-sizing border-box
 </style>

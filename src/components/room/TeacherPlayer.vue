@@ -22,8 +22,6 @@
 	import Player from "./Player";
 	import {mapState} from 'vuex';
 	import StreamController from "../../controllers/StreamController";
-	import LogController from "../../controllers/LogController";
-
 	export default {
 		name: "TeacherPlayer",
 		components: {Player, ScaleLoader},
@@ -47,7 +45,7 @@
 				StreamController.initStream().then(() => {
 					this.loading = false;
 				}).catch(error => {
-					LogController.printLog(`playTeacher error ${error}`);
+					console.log(`playTeacher error ${error}`);
 				});
 			}
 		},
