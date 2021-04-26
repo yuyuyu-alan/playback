@@ -1,10 +1,10 @@
 import store from "../store";
 // import {Message} from "element-ui";
 // import swal from 'sweetalert';
-// import UserController from "./UserController";
+import UserController from "./UserController";
 // import Room from "../models/room/Room";
-// import StudentModel from "../models/student/Student";
-// import ConstantController from "./ConstantController";
+import StudentModel from "../models/student/Student";
+import ConstantController from "./ConstantController";
 // import EventBus from '../eventBus';
 // import LayoutController from "./LayoutController";
 
@@ -33,7 +33,8 @@ class RoomController {
   /** 监听信令添加*/
   listenPubMsg() {
     const { rtcEngine } = store.state;
-    rtcEngine.on("onPubMsg", (event) => { // todo 收到信令
+    rtcEngine.on("onPubMsg", (event) => {
+      // todo 收到信令
       console.log("====收到信令=", event);
       // const {id, data} = event;
       // if (id === 'showTrophy') {
@@ -109,28 +110,44 @@ class RoomController {
     const { rtcEngine } = store.state;
     rtcEngine.on("onUserJoined", (event) => {
       console.log("用户进入房间===", event);
-      // const {Student = {}, roomStatus} = store.state;
-      // const {items: students = []} = Student;
-      // const {properties} = event;
+      const { Student = {}, roomStatus } = store.state;
+      const { items: students = [] } = Student;
+      const { properties } = event;
       // // LogController.printLog("用户加入", event);
-      // if (properties.role === ConstantController.ROOM_ROLE.STUDENT) {
-      // 	//查看是否之前进入过
-      // 	if (students.some(item => item.uid === properties.uid)) {
-      // 		const index = students.findIndex(item => item.uid === properties.uid);
-      // 		for (let key in properties) {
-      // 			store.commit('Student/setProperty', {index, key, value: properties[key]});
-      // 		}
-      // 		store.commit('Student/setProperty', {index, key: 'isShow', value: true});
-      // 	} else {
-      // 		store.commit('Student/setItem', new StudentModel(properties));
-      // 	}
-      // 	//如果上课后 进入的学生打开视频
-      // 	if (roomStatus === ConstantController.ROOM_STATUS.DOING) {
-      // 		UserController.changeAudioStatus(properties.uid, ConstantController.STREAM_TYPE.VIDEO);
-      // 	}
-      // } else if (properties.role === ConstantController.ROOM_ROLE.OBSERVER) {
-      // 	store.commit('Observer/setItem', properties);
-      // }
+    if (properties.role === ConstantController.ROOM_ROLE.TEACHER) {
+        // 老师进入
+        store.commit("Teacher/setTeacher", properties);
+      }else if (properties.role === ConstantController.ROOM_ROLE.STUDENT) {
+        //查看是否之前进入过
+        if (students.some((item) => item.uid === properties.uid)) {
+          const index = students.findIndex(
+            (item) => item.uid === properties.uid
+          );
+          for (let key in properties) {
+            store.commit("Student/setProperty", {
+              index,
+              key,
+              value: properties[key],
+            });
+          }
+          store.commit("Student/setProperty", {
+            index,
+            key: "isShow",
+            value: true,
+          });
+        } else {
+          store.commit("Student/setItem", new StudentModel(properties));
+        }
+        //如果上课后 进入的学生打开视频
+        if (roomStatus === ConstantController.ROOM_STATUS.DOING) {
+          UserController.changeAudioStatus(
+            properties.uid,
+            ConstantController.STREAM_TYPE.VIDEO
+          );
+        }
+      } else if (properties.role === ConstantController.ROOM_ROLE.OBSERVER) {
+        store.commit("Observer/setItem", properties);
+      }
     });
   }
 
@@ -193,7 +210,7 @@ class RoomController {
   listenNetworkStateChanged() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onConnectionStateChanged", (event) => {
-      console.log('监听网络状态===', event)
+      console.log("监听网络状态===", event);
     });
   }
 }
