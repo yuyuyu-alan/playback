@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Helper from "../helper";
+import Teacher from "./modules/Teacher";
+import Student from "./modules/Student";
 // import CloudHubPlayback from "cloudhub-playback-sdk";
 import ConstantController from "../controllers/ConstantController";
 Vue.use(Vuex);
@@ -54,5 +56,8 @@ export default new Vuex.Store({
 			commit('setData', obj);
 		}
 	},
-	modules: {}
+	modules: {
+		Teacher,
+		Student
+	}
 });
