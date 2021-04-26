@@ -41,8 +41,7 @@ class RoomController {
         //发送奖杯
         EventBus.$emit("trophy", data);
       } else if (msgName === "ChangeLayout") {
-        console.log('%c[ 改变布局 ]',msgName , 'color: aqua;background-color: black;font-size: 16px');
-        
+        console.log(`%c[ < 改变布局 >------${ msgName} ]` , 'color: aqua;background-color: black;font-size: 16px');
         
         // LogController.printLog('ChangeLayout', data);
         //改变布局
