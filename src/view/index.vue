@@ -11,7 +11,7 @@ import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController"
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
-import Room from "../../models/room/Room";
+import Room from "../models/room/Room";
 export default {
   components: {
     TeacherPlayer,

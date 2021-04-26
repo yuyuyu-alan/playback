@@ -36,7 +36,7 @@ export default {
     }),
   },
   watch: {
-    students: {
+    studentLayouts: {
       handler(e) {
         console.log("学生==============", e);
       },

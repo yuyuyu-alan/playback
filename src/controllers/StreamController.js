@@ -45,9 +45,10 @@ class StreamController {
   }
 
   /** 播放视频 */
-  playVideo(uid, domId, stream, type) {
-    if (!stream || !domId) return false;
-    stream.setupRemoteVideo(uid, type, domId);
+  playVideo(uid, view, stream, type) {
+    console.log('--++++++++++++++++~~~~~~~~~~~-', uid, view, stream, type)
+    if (!stream || !view) return false;
+    stream.setupRemoteVideo(uid, type, view);
   }
 
   /** 播放音频 */
@@ -72,8 +73,8 @@ class StreamController {
     rtcEngine.on("onRemoteVideoStateChanged", (event) => {
       // LogController.printLog('远端流添加', event);
 	  const { state, mediaType, uid, streamId } = event;
-	  
-      this.playVideo(uid, "teacher-player", rtcEngine, mediaType);
+      let videoEl = document.getElementById('teacher-player')
+      this.playVideo(uid,videoEl , rtcEngine, mediaType);
       console.log("======接收到流数据=", event);
       // const {Student = {}} = store.state;
       // const {items: students} = Student;
