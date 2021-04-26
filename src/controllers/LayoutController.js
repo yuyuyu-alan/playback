@@ -4,7 +4,7 @@ import SingleToBottomLayout from "./layout/SingleToBottomLayout";
 import SingleLayout from "./layout/SingleLayout";
 import SquareLayout from "./layout/SquareLayout";
 import TwoFocus from "./layout/TwoFocus";
-import store from '../stores';
+import store from '../store';
 import ConstantController from "./ConstantController";
 import Helper from "../helper";
 
