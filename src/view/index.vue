@@ -11,6 +11,7 @@ import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController"
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
+import Room from "../../models/room/Room";
 export default {
   components: {
     TeacherPlayer,
@@ -25,11 +26,14 @@ export default {
   methods: {
     init() {
       if (CloudHubPlayback) {
-        CloudHubPlayback.startPlay(() => {
+        CloudHubPlayback.startPlay((room) => {
           // 房间号  CloudHubPlayback.getChannelId()
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),
+            roomType: Number(room.roomlayout),
+						currLayoutType: Room.getRoomDefaultLayoutType(room.roomlayout)
           });
+         
           StreamController.listen();
           RoomController.listen();
         });
