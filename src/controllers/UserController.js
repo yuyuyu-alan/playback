@@ -27,9 +27,11 @@ class UserController {
 	listenPubMsg() {
 		const {rtcEngine} = store.state;
 		rtcEngine.on('onPubMsg', event => {
-			let {id, data} = event;
-			if (id === 'ToggleWindow') {
-				this.toggleWindowAction(data.user);
+			let {msgId, fromId} = event;
+			console.log(`%c[ < =====监听信令添加 >------ ]` , 'color: aqua;background-color: black;font-size: 16px');
+			console.log('=====', msgId)
+			if (msgId === 'ToggleWindow') {
+				this.toggleWindowAction(fromId);
 			}
 		});
 	}
@@ -38,9 +40,9 @@ class UserController {
 	listenDelMsg() {
 		const {rtcEngine} = store.state;
 		rtcEngine.on('onDelMsg', event => {
-			let {id, data} = event;
-			if (id === 'ToggleWindow') {
-				this.resetTeacherWindow(data.isNextSwitch);
+			let {msgId, fromId} = event;
+			if (msgId === 'ToggleWindow') {
+				// this.resetTeacherWindow(data.isNextSwitch);
 			}
 		});
 	}
@@ -66,32 +68,14 @@ class UserController {
 		rtcEngine.setClientRole(type);
 	}
 
-	toggleWindow(userId) {
-		/**限制切换频率 5s一次*/
-		const localToggleTime = getStorageItem('toggleWindowTime');
-		if (localToggleTime) {
-			const toggleTime = moment().diff(moment(localToggleTime), 'seconds');
-			if (toggleTime < 5) return Message.warning('切换频率过快,请稍后');
-		}
-		setStorageItem('toggleWindowTime', moment());
-		/**老师上麦*/
-		if (userId.includes('teacher')) {
-			RoomController.sendSignalingMessage('ToggleWindow', {}, 'delete');
-		} else {
-			const {currFocusIndex} = store.state;
-			/**如果麦上有学生 就先把老师置回麦上再切换*/
-			const isNextSwitch = currFocusIndex >= 0;
-			if (isNextSwitch) RoomController.sendSignalingMessage('ToggleWindow', {isNextSwitch}, 'delete');
-			RoomController.sendSignalingMessage('ToggleWindow', {user: userId}, 'publish');
-		}
-	}
-
 	/** 切换窗口*/
 	toggleWindowAction(userId) {
 		const {Student = {}, currFocusIndex, studentLayouts, currLayout, Teacher = {}} = store.state;
 		const {items: students} = Student;
 		const {teacher} = Teacher;
 		const index = students.findIndex(item => item.uid === userId);
+		console.log(`%c[ < 切换窗口======= >------ ]` , 'color: aqua;background-color: black;font-size: 16px');
+		console.log(userId, '====', index)
 		if (index >= 0) {
 			const oldLayout = studentLayouts[index];
 			store.commit('setStudentLayoutsChild', {
@@ -105,27 +89,6 @@ class UserController {
 			this.changeAudioStatus(userId, ConstantController.STREAM_TYPE.BOTH);
 			store.commit('setData', {currFocusIndex: index});
 		}
-	}
-
-	/** 重置老师位置 */
-	resetTeacherWindow(isNextSwitch) {
-		const {Student = {}, currFocusIndex, currLayout, Teacher = {}} = store.state;
-		const {items: students} = Student;
-		const {teacher} = Teacher;
-		if (currFocusIndex === -1) return false;
-		/**让上麦的学生回原位*/
-		store.commit('setStudentLayoutsChild', {
-			index: currFocusIndex,
-			value: currLayout['students'][currFocusIndex]
-		});
-		this.changeAudioStatus(students[currFocusIndex].uid, ConstantController.STREAM_TYPE.VIDEO);
-		store.commit('resetTeacherLayout');
-		//三方切换 不用给老师开麦
-		if (!isNextSwitch) {
-			this.changeAudioStatus(teacher.uid, ConstantController.STREAM_TYPE.BOTH);
-		}
-		store.commit('setData', {currFocusIndex: -1});
-		StreamController.setVideoProfile(teacher.stream, ConstantController.VIDEO_PROFILE.BIG);
 	}
 }
 

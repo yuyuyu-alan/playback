@@ -39,8 +39,7 @@ export default {
     studentLayouts: {
       handler(e) {
         console.log("学生==============", e);
-      },
-      immediate: true,
+      }
     },
   },
 };

@@ -61,22 +61,20 @@ class StreamController {
   listenStreamAdded() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onRemoteVideoStateChanged", (event) => {
-      // LogController.printLog('远端流添加', event);
-      const { state, mediaType, uid, streamId } = event;
+      const { state, mediaType, uid } = event;
+      const user_type = event.uid.split('_')[0]
+      if (user_type == 'teacher') {
+        setTimeout(() => {
+          let videoEl = document.getElementById('teacher-player')
+          this.playVideo(uid, videoEl, mediaType);
+        }, 100)
+      } else if (user_type == 'user') { setTimeout(() => {
+          const videodom = document.getElementById(`player-${event.uid}`)
+          this.playVideo(event.uid, videodom, event.mediaType);
+          // this.playAudio(stream);
+        }, 100)
 
-      setTimeout(() => {
-        let videoEl = document.getElementById('teacher-player')
-        this.playVideo(uid, videoEl, mediaType);
-      }, 100)
-      // const {Student = {}} = store.state;
-      // const {items: students} = Student;
-      // const {stream} = event;
-      // const streamType = stream.getType();
-      // if (streamType === 'video') {
-      // 	students.some(item => item.uid === stream.getUserId()) && this.subscribeStream(stream);
-      // } else if (streamType === 'media') {
-      // 	this.subscribeStream(stream);
-      // }
+      }
     });
   }
 
@@ -84,12 +82,7 @@ class StreamController {
   listenStreamMutedAudio() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onRemoteAudioStateChanged", (event) => {
-      // LogController.printLog('流音频关闭', event);
       console.log("远端流音频变化=", event);
-      // const {stream} = event;
-      // const userId = stream.getUserId();
-      // this.unPlayAudio(stream);
-      // this.updateStreamAudioStatus(stream, userId);
     });
   }
 }

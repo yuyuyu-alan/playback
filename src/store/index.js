@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import Helper from "../helper";
 import Teacher from "./modules/Teacher";
 import Student from "./modules/Student";
-// import CloudHubPlayback from "cloudhub-playback-sdk";
 import ConstantController from "../controllers/ConstantController";
 Vue.use(Vuex);
 const getDefaultState = () => {
@@ -37,8 +36,6 @@ export default new Vuex.Store({
 	state: Helper.deepCopy(getDefaultState()),
 	mutations: {
 		setData(state, obj) {
-			console.log(`%c[ < change===== >------${ JSON.stringify( obj ) } ]` , 'color: aqua;background-color: black;font-size: 16px');
-			
 			for (let i in obj) {
 				state[i] = obj[i];
 			}

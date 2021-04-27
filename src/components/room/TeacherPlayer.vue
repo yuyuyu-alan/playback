@@ -57,8 +57,7 @@ export default {
     teacherLayout: {
       handler(e) {
         console.log("老师==================", e);
-      },
-      immediate: true,
+      }
     },
   },
 };

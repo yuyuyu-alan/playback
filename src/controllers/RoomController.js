@@ -26,7 +26,6 @@ class RoomController {
     this.listenDelMsg();
     this.listenRoomUserJoined();
     this.listenRoomUserLeaved();
-    // this.listenUserPropertyChanged();
     this.listenNetworkStateChanged();
   }
 
@@ -41,25 +40,15 @@ class RoomController {
         //发送奖杯
         EventBus.$emit("trophy", data);
       } else if (msgName === "ChangeLayout") {
-
-        store.commit('setData', {
-          roomType: Number(event.data.layout),
-          currLayoutType: Room.getRoomDefaultLayoutType(event.data.layout)
-        });
-
-        console.log(`%c[ < 改变布局 >------${ JSON.stringify(event)} ]` , 'color: aqua;background-color: black;font-size: 16px');
-        
-        // LogController.printLog('ChangeLayout', data);
+        const { data } = event
         //改变布局
         const { currLayoutType } = store.state;
-
         if (Number(data.layout) === ConstantController.LAYOUT_TYPE.SINGLE) {
           data.layout =
             currLayoutType === "singleToRight"
               ? ConstantController.LAYOUT_TYPE.SINGLE_TO_RIGHT
               : ConstantController.LAYOUT_TYPE.SINGLE_TO_BOTTOM;
         }
-
         //todo 如果布局是2人上台
         if (Number(data.layout) === ConstantController.LAYOUT_TYPE.TWO_FOCUS) {
           store.commit("setData", {
@@ -114,16 +103,6 @@ class RoomController {
     const { rtcEngine } = store.state;
     rtcEngine.on("onDelMsg", (event) => {
       console.log("====删除信令=", event);
-      // const {id} = event;
-      // if (id === 'AllForbidTalk') {
-      // 	const {Teacher = {}} = store.state;
-      // 	const {teacher} = Teacher;
-      // 	store.commit('setData', {chatStatus: ConstantController.CHAT_STATUS.ENABLE});
-      // 	this.sendChatMessage('老师关闭了全体禁言', {
-      // 		nickname: '',
-      // 		type: ConstantController.CHAT_TYPE.SYSTEM
-      // 	}, teacher.uid);
-      // }
     });
   }
 
@@ -151,53 +130,6 @@ class RoomController {
     const { rtcEngine } = store.state;
     rtcEngine.on("onUserLeaved", (event) => {
       console.log("用户离开房间==", event);
-      // const {Student = {}, Observer, currFocusIndex} = store.state;
-      // const {items: observer} = Observer;
-      // const {items: students} = Student;
-      // const {id} = event;
-      // // LogController.printLog('用户离开', event);
-      // if (students.some(item => item.uid === id)) {
-      // 	const index = students.findIndex(item => item.uid === id);
-      // 	//如果当前离开的学生是上麦状态的话
-      // 	if (index === currFocusIndex) {
-      // 		this.sendSignalingMessage('ToggleWindow', {user: students[index].uid}, 'delete');
-      // 	}
-      // 	store.commit('Student/setProperty', {index, key: 'isShow', value: false});
-      // } else if (observer.some(item => item.uid === id)) {
-      // 	store.commit('Observer/delItem', id);
-      // }
-    });
-  }
-
-  /** 用户属性改变*/
-  listenUserPropertyChanged() {
-    const { rtcEngine } = store.state;
-    rtcEngine.on("user-properties-update", (event) => {
-      // const {Teacher = {}, Student = {}} = store.state;
-      // const {teacher = {}} = Teacher;
-      // const {items: students = []} = Student;
-      // const {id: uid, properties = {}} = event;
-      // // LogController.printLog('用户属性改变', event);
-      // // 判断是否是老师
-      // if (teacher.uid === uid) {
-      // 	for (let key in properties) {
-      // 		store.commit('Teacher/setProperty', {key, value: properties[key]});
-      // 	}
-      // 	if (properties.streamType === ConstantController.STREAM_TYPE.VIDEO) {
-      // 		teacher.stream.muteAudio();
-      // 	} else if (properties.streamType === ConstantController.STREAM_TYPE.BOTH) {
-      // 		teacher.stream.unmuteAudio();
-      // 	}
-      // 	store.commit('Teacher/setProperty', {
-      // 		key: 'micStatus',
-      // 		value: teacher.stream.isPubedAudio() ? ConstantController.MIC_STATUS.UNMUTE : ConstantController.MIC_STATUS.MUTE
-      // 	});
-      // } else if (students.some(item => item.uid === uid)) {
-      // 	const index = students.findIndex(item => item.uid === uid);
-      // 	for (let key in properties) {
-      // 		store.commit('Student/setProperty', {index, key, value: properties[key]});
-      // 	}
-      // }
     });
   }
 
