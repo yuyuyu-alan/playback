@@ -30,7 +30,6 @@ class StreamController {
       }, 100)
       resolve();
       return false;
-
     });
   }
 

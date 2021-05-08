@@ -34,7 +34,8 @@ class RoomController {
     const { rtcEngine } = store.state;
     rtcEngine.on("onPubMsg", (event) => {
       // todo 收到信令
-      console.log("====收到信令=", event);
+      console.log(`%c[ < 收到信令 >------${ JSON.stringify( event ) } ]` , 'color: red;background-color: black;font-size: 16px');
+      
       const { msgName, data } = event;
       if (msgName === "showTrophy") {
         //发送奖杯

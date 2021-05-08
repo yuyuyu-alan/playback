@@ -1,7 +1,7 @@
 import {setStorageItem, getStorageItem} from "../localStorage";
 import moment from "moment";
 import store from '../store';
-import {Message} from 'element-ui';
+import { Message } from 'element-ui';
 import ConstantController from "./ConstantController";
 import StreamController from "./StreamController";
 import RoomController from "./RoomController";

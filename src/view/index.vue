@@ -1,5 +1,5 @@
 <template>
-  <div class="room-show ">
+  <div class="room-show">
     <teacher-player />
     <student-player />
   </div>
@@ -8,8 +8,8 @@
 <script>
 import CloudHubPlayback from "cloudhub-playback-sdk";
 import StreamController from "@/controllers/StreamController";
-import RoomController from "@/controllers/RoomController"
-import UserController from "@/controllers/UserController"
+import RoomController from "@/controllers/RoomController";
+import UserController from "@/controllers/UserController";
 import LayoutController from "../controllers/LayoutController";
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
@@ -17,37 +17,40 @@ import Room from "../models/room/Room";
 export default {
   components: {
     TeacherPlayer,
-    StudentPlayer
+    StudentPlayer,
   },
   data() {
     return {};
   },
   mounted() {
     this.init();
-
   },
   watch: {
     currLayoutType: function (e) {
-      console.log(`%c[ < bisdcdjscd-------- >------${ JSON.stringify( e ) } ]` , 'color: aqua;background-color: black;font-size: 16px');
-      
-			LayoutController.watchWindowResize();
-		},
+      console.log(
+        `%c[ < bisdcdjscd-------- >------${JSON.stringify(e)} ]`,
+        "color: aqua;background-color: black;font-size: 16px"
+      );
+
+      LayoutController.watchWindowResize();
+    },
   },
   methods: {
     init() {
       if (CloudHubPlayback) {
         CloudHubPlayback.startPlay((room) => {
-          console.log('==================================',room, 'color: yelllow')
+          console.log(
+            "==================================",
+            room,
+            "color: yelllow"
+          );
           // 房间号  CloudHubPlayback.getChannelId()
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),
             roomType: Number(room.roomlayout),
-						currLayoutType: Room.getRoomDefaultLayoutType(room.roomlayout)
+            currLayoutType: Room.getRoomDefaultLayoutType(room.roomlayout),
           });
-          	LayoutController.watchWindowResize();
-
-          
-         
+          LayoutController.watchWindowResize();
           StreamController.listen();
           RoomController.listen();
           UserController.listen();
@@ -61,11 +64,12 @@ export default {
 <style lang="stylus" scoped>
 @import '../assets/css/app.styl';
 
-.room-show 
-  position relative
-  padding-top 60px
-  width 100vw
-  height 100vh
-  overflow hidden
-  box-sizing border-box
+.room-show {
+  position: relative;
+  padding-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 </style>
