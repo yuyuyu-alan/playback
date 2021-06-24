@@ -10,6 +10,7 @@ import CloudHubPlayback from "cloudhub-playback-sdk";
 import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController";
 import UserController from "@/controllers/UserController";
+import WhiteboardController from "@/controllers/WhiteboardController";
 import LayoutController from "../controllers/LayoutController";
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
@@ -54,6 +55,7 @@ export default {
           StreamController.listen();
           RoomController.listen();
           UserController.listen();
+          WhiteboardController.listen();
         });
       }
     },
