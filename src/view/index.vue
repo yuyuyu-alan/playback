@@ -1,11 +1,13 @@
 <template>
   <div class="room-show">
+    <whiteboard/>
     <teacher-player />
     <student-player />
   </div>
 </template>
 
 <script>
+import Whiteboard from "../components/room/whiteboard/Whiteboard";
 import CloudHubPlayback from "cloudhub-playback-sdk";
 import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController";
@@ -19,6 +21,7 @@ export default {
   components: {
     TeacherPlayer,
     StudentPlayer,
+    Whiteboard
   },
   data() {
     return {};

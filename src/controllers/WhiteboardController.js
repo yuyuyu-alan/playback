@@ -1,4 +1,4 @@
-import store from "../stores";
+import store from "../store";
 import ConstantController from "./ConstantController";
 import EventBus from "../eventBus";
 import Config from "../config";
@@ -29,6 +29,7 @@ class WhiteboardController {
 			codec: "vp8",
 			mode: "rtc",
 		});
+		console.log('========client======---===', client)
 		store.commit("setData", {whiteboardClient: client});
 		client.init(Config.ys.appId);
 	}

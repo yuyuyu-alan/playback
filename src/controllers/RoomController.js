@@ -29,13 +29,26 @@ class RoomController {
     this.listenNetworkStateChanged();
   }
 
+  sendSignalingMessage(id, data, type, isSave = true) {
+    const { rtcEngine } = store.state;
+    const name = id;
+    const toId = window.CloudHubRTC.CONSTANTS.MSG_TO_ALLUSER;
+    console.log(type,'=====++++++=======', name, id, toId, data, isSave)
+    if (type === 'publish') {
+      rtcEngine.pubMsg(name, id, toId, data, isSave);
+    } else if (type === 'delete') {
+      rtcEngine.delMsg(name, id, toId, data, isSave);
+    }
+  }
+
+
   /** 监听信令添加*/
   listenPubMsg() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onPubMsg", (event) => {
       // todo 收到信令
-      console.log(`%c[ < 收到信令 >------${ JSON.stringify( event ) } ]` , 'color: red;background-color: black;font-size: 16px');
-      
+      console.log(`%c[ < 收到信令 >---${event.msgName}---${JSON.stringify(event.data)} ]`, 'color: red;background-color: black;font-size: 16px');
+
       const { msgName, data } = event;
       if (msgName === "showTrophy") {
         //发送奖杯
@@ -107,24 +120,24 @@ class RoomController {
     });
   }
 
- /** 用户进入房间 */
- listenRoomUserJoined() {
-  const { rtcEngine } = store.state;
-  rtcEngine.on("onUserJoined", (event) => {
-    console.log("用户进入房间===", event);
-    const { properties } = event;
-    if (properties.role === ConstantController.ROOM_ROLE.TEACHER) {
-      // 老师进入
-      store.commit("Teacher/setTeacher", properties);
-    } else if (properties.role === ConstantController.ROOM_ROLE.STUDENT) {
-      // 学生
-      store.commit("Student/setItem", new StudentModel(properties));
-    } else if (properties.role === ConstantController.ROOM_ROLE.OBSERVER) {
-      // 
-      store.commit("Observer/setItem", properties);
-    }
-  });
-}
+  /** 用户进入房间 */
+  listenRoomUserJoined() {
+    const { rtcEngine } = store.state;
+    rtcEngine.on("onUserJoined", (event) => {
+      console.log("用户进入房间===", event);
+      const { properties } = event;
+      if (properties.role === ConstantController.ROOM_ROLE.TEACHER) {
+        // 老师进入
+        store.commit("Teacher/setTeacher", properties);
+      } else if (properties.role === ConstantController.ROOM_ROLE.STUDENT) {
+        // 学生
+        store.commit("Student/setItem", new StudentModel(properties));
+      } else if (properties.role === ConstantController.ROOM_ROLE.OBSERVER) {
+        // 
+        store.commit("Observer/setItem", properties);
+      }
+    });
+  }
 
   /** 用户离开房间*/
   listenRoomUserLeaved() {
