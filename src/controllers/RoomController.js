@@ -1,7 +1,4 @@
 import store from "../store";
-// import {Message} from "element-ui";
-// import swal from 'sweetalert';
-// import UserController from "./UserController";
 import Room from "../models/room/Room";
 import StudentModel from "../models/student/Student";
 import ConstantController from "./ConstantController";
@@ -33,7 +30,6 @@ class RoomController {
     const { rtcEngine } = store.state;
     const name = id;
     const toId = window.CloudHubRTC.CONSTANTS.MSG_TO_ALLUSER;
-    console.log(type,'=====++++++=======', name, id, toId, data, isSave, '~~~~~~~~,')
     if (type === 'publish') {
       rtcEngine.pubMsg(name, id, toId, data, isSave);
     } else if (type === 'delete') {
@@ -50,6 +46,7 @@ class RoomController {
       console.log(`%c[ < 收到信令 >---${event.msgName}---${JSON.stringify(event.data)} ]`, 'color: red;background-color: black;font-size: 16px');
 
       const { msgName, data } = event;
+      console.log('====白板=', data.whiteboardInfo)
       if (msgName === "showTrophy") {
         //发送奖杯
         EventBus.$emit("trophy", data);
@@ -77,38 +74,13 @@ class RoomController {
             isTwoFocus: false,
           });
         }
-        //如果收到白板的信息 需要发送打开白板的信令
-        if (data.whiteboardInfo) {
-          this.sendSignalingMessage(
-            data.whiteboardInfo.name,
-            data.whiteboardInfo.data,
-            data.whiteboardInfo.type
-          );
-        }
+       
 
         if (Number(data.layout) === ConstantController.LAYOUT_TYPE.DEFAULT) {
           // 切回默认布局
           store.commit("setData", { currFocusIndex: -1 });
           LayoutController.watchWindowResize();
         }
-      } else if (msgName === "AllForbidTalk") {
-        // const { Teacher = {} } = store.state;
-        // const { teacher } = Teacher;
-        // //更改聊天状态
-        // store.commit("setData", {
-        //   chatStatus: ConstantController.CHAT_STATUS.DISABLE,
-        // });
-        // this.sendChatMessage(
-        //   "老师开启了全体禁言",
-        //   {
-        //     nickname: "",
-        //     type: ConstantController.CHAT_TYPE.SYSTEM,
-        //   },
-        //   teacher.uid
-        // );
-      } else if (msgName === "Notice_BigRoom_Usernum") {
-        //记录直播房间人数
-        // store.commit("setData", { liveUserNum: data.num });
       }
     });
   }

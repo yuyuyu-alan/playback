@@ -1,5 +1,4 @@
 import store from "../store";
-import ConstantController from "./ConstantController";
 
 class StreamController {
   constructor() {
@@ -21,7 +20,7 @@ class StreamController {
 
   /** 初始化流 */
   initStream() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const { teacher } = store.state.Teacher;
       const { uid, streamType } = teacher
       setTimeout(() => {
@@ -60,7 +59,7 @@ class StreamController {
   listenStreamAdded() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onRemoteVideoStateChanged", (event) => {
-      const { state, mediaType, uid } = event;
+      const { mediaType, uid } = event;
       const user_type = event.uid.split('_')[0]
       if (user_type == 'teacher') {
         setTimeout(() => {

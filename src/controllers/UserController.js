@@ -1,7 +1,4 @@
-import {setStorageItem, getStorageItem} from "../localStorage";
-import moment from "moment";
 import store from '../store';
-import { Message } from 'element-ui';
 import ConstantController from "./ConstantController";
 import StreamController from "./StreamController";
 import RoomController from "./RoomController";
@@ -40,7 +37,7 @@ class UserController {
 	listenDelMsg() {
 		const {rtcEngine} = store.state;
 		rtcEngine.on('onDelMsg', event => {
-			let {msgId, fromId} = event;
+			let {msgId, fromId } = event;
 			if (msgId === 'ToggleWindow') {
 				// this.resetTeacherWindow(data.isNextSwitch);
 			}

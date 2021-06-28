@@ -94,7 +94,7 @@ class LayoutController {
 
 	// todo 屏幕大小变化时更改相应视图的大小
 	watchWindowResize() {
-		console.log(`%c[ < 屏幕大小变化-- >------ ]` , 'color: yellow;background-color: black;font-size: 16px');
+		// console.log(`%c[ < 屏幕大小变化-- >------ ]` , 'color: yellow;background-color: black;font-size: 16px');
 		
 		const {currLayoutType, isTwoFocus, whiteboardStatus, mediaInfo = {}, isPlayMedia} = store.state;
 		if (!currLayoutType) return;
@@ -103,7 +103,7 @@ class LayoutController {
 			return false;
 		}
 		const layouts = this.getLayouts(currLayoutType);
-		console.log('layouts=================', layouts)
+		// console.log('layouts=================', layouts)
 		
 		const {focus, students: studentLayouts, whiteboard} = layouts;
 		const _whiteboardStatus = whiteboardStatus === ConstantController.WHITEBOARD_STATUS.SHOW;
