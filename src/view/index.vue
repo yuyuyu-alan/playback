@@ -48,13 +48,13 @@ export default {
           console.log(
             "==================================",
             room,
-            "color: yelllow"
+            "color: yelllow", room.room
           );
           // 房间号  CloudHubPlayback.getChannelId()
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),
-            roomType: Number(room.roomlayout),
-            currLayoutType: Room.getRoomDefaultLayoutType(room.roomlayout),
+            roomType: Number(room.room.roomlayout),
+            currLayoutType: Room.getRoomDefaultLayoutType(room.room.roomlayout),
           });
           LayoutController.watchWindowResize();
           StreamController.listen();
