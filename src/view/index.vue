@@ -1,6 +1,6 @@
 <template>
   <div class="room-show">
-    <whiteboard/>
+    <test/>
     <teacher-player />
     <student-player />
   </div>
@@ -17,11 +17,13 @@ import LayoutController from "../controllers/LayoutController";
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
 import Room from "../models/room/Room";
+import test from "../components/test.vue"
 export default {
   components: {
     TeacherPlayer,
     StudentPlayer,
-    Whiteboard
+    Whiteboard,
+    test
   },
   data() {
     return {};

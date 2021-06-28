@@ -33,7 +33,7 @@ class RoomController {
     const { rtcEngine } = store.state;
     const name = id;
     const toId = window.CloudHubRTC.CONSTANTS.MSG_TO_ALLUSER;
-    console.log(type,'=====++++++=======', name, id, toId, data, isSave)
+    console.log(type,'=====++++++=======', name, id, toId, data, isSave, '~~~~~~~~,')
     if (type === 'publish') {
       rtcEngine.pubMsg(name, id, toId, data, isSave);
     } else if (type === 'delete') {
