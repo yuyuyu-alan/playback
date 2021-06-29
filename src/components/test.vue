@@ -51,7 +51,9 @@ export default {
   },
   mounted() {
     EventBus.$on("showWhiteboard", (falg) => {
-      this.$refs["whiteboardBox"].style.zIndex = falg ? "99" : "-99";
+      this.$store.dispatch('setData', {
+				whiteboardStatus: falg ? 1 : 0
+			});
     });
   },
   methods: {

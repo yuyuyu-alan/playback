@@ -42,16 +42,11 @@ export default {
     init() {
       if (CloudHubPlayback) {
         CloudHubPlayback.startPlay((room) => {
-          // console.log(
-          //   "==================================",
-          //   room,
-          //   "color: yelllow", room.room
-          // );
-          // 房间号  CloudHubPlayback.getChannelId()
+          let _currLayoutType = room.maxonlinevideos == 2 ? 2 : room.room.roomlayout
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),
-            roomType: Number(room.room.roomlayout),
-            currLayoutType: Room.getRoomDefaultLayoutType(room.room.roomlayout),
+            roomType: Number(room.room.roomtype),
+            currLayoutType: Room.getRoomDefaultLayoutType(_currLayoutType),
           });
           LayoutController.watchWindowResize();
           StreamController.listen();

@@ -36,6 +36,9 @@ export default class DefaultLayout extends BaseLayout {
 
     getWhiteboard() {
         let whiteboardWidth = this.docWidth - (this.studentWidth + this.margin) * 2 - this.margin * 2
+        console.log('whiteboardWidth===================================', this.docWidth)
+        console.log('studentWidth===================================', this.studentWidth)
+        console.log('margin===================================', this.margin)
         return {
             width: whiteboardWidth,
             height: whiteboardWidth / 16 * 9,

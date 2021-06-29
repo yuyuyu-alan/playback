@@ -1,3 +1,4 @@
+import store from '../store';
 class WhiteboardController {
 	constructor() {
 		this.instance = null;
@@ -61,9 +62,6 @@ class WhiteboardController {
 		whiteboardDom.style.width = whiteboardLayout.width + 'px';
 		whiteboardDom.style.height = whiteboardLayout.height + 'px';
 		whiteboardDom.style.zIndex = status ? whiteboardLayout.zIndex : -199;
-		// if (whiteboardInstance) {
-		// 	whiteboardInstance.resizeWhiteboard();
-		// }
 	}
 
 }
