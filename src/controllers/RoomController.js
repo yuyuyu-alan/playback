@@ -34,11 +34,14 @@ class RoomController {
       console.log(`%c[ < 收到信令 >---${event.msgName}---${JSON.stringify(event.data)} ]`, 'color: red;background-color: black;font-size: 16px');
 
       const { msgName, data } = event;
+      if(msgName === 'ClassBegin') {
+        store.commit('setData', {roomStatus: ConstantController.ROOM_STATUS.DOING});
+      }
       if(msgName === 'showWhiteboard') { // 显示白板
         EventBus.$emit("showWhiteboard", true);
       } else if (msgName === "showTrophy") { // 奖杯相关
         //发送奖杯
-        // EventBus.$emit("trophy", data);
+        EventBus.$emit("trophy", data);
 
       } else if (msgName === "ChangeLayout") {
         //改变布局

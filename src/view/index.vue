@@ -1,6 +1,7 @@
 <template>
   <div class="room-show">
-    <test/>
+    <white-borard/>
+    <trophy-animation/>
     <teacher-player />
     <student-player />
   </div>
@@ -15,12 +16,14 @@ import LayoutController from "../controllers/LayoutController";
 import TeacherPlayer from "../components/room/TeacherPlayer";
 import StudentPlayer from "../components/room/StudentPlayer";
 import Room from "../models/room/Room";
-import test from "../components/test.vue"
+import whiteBorard from "../components/whiteBorard"
+import TrophyAnimation from "../components/room/TrophyAnimation";
 export default {
   components: {
     TeacherPlayer,
     StudentPlayer,
-    test
+    whiteBorard,
+    TrophyAnimation
   },
   data() {
     return {};
@@ -30,11 +33,6 @@ export default {
   },
   watch: {
     currLayoutType: function (e) {
-      console.log(
-        `%c[ < bisdcdjscd-------- >------${JSON.stringify(e)} ]`,
-        "color: aqua;background-color: black;font-size: 16px"
-      );
-
       LayoutController.watchWindowResize();
     },
   },
@@ -42,6 +40,7 @@ export default {
     init() {
       if (CloudHubPlayback) {
         CloudHubPlayback.startPlay((room) => {
+          console.log('start======================', room)
           let _currLayoutType = room.maxonlinevideos == 2 ? 2 : room.room.roomlayout
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),

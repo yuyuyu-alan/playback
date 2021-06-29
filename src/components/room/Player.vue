@@ -25,12 +25,38 @@
       :id="`player-${user.uid}`"
       :style="{ 'background-image': `url(${user.avatar})` }"
     ></div>
+    
+    
+    <div class="bottom-bar" :class="[type==='student'?'student-bar':'']" @click.stop>
+			<div class="title">{{user.nickname}}</div>
+			<div class="right" v-if="roomStatus === roomStatusOptions.DOING">
+			
+				<el-popover placement="bottom-end" width="200" trigger="hover">
+					<div class="trophy" v-if="type==='student'" slot="reference">
+						<i class="Hydrus icon_bianzubeifen4" style="margin-right: 4px;"></i>
+						<span>x{{user.trophyCount}}</span>
+					</div>
+					<div class="trophy-box">
+						<template v-if="roomTrophies && roomTrophies.length>0">
+							<div class="trophy-item" v-for="item in roomTrophies" :key="item.id"
+								 @click="storeTrophy(user.uid,item)">
+								<img class="trophy-icon" :src="item.icon" :alt="item.name">
+								<div>{{item.name}}</div>
+							</div>
+						</template>
+						<div v-else>暂无奖杯</div>
+					</div>
+				</el-popover>
+
+			</div>
+		</div>
+
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-
+import ConstantController  from "../../controllers/ConstantController"
 export default {
   name: "Player",
   props: {
@@ -49,11 +75,15 @@ export default {
   },
   data() {
     return {
+      roomStatusOptions: ConstantController.ROOM_STATUS, //房间状态
     };
   },
   computed: {
     ...mapState({
-      currLayoutType: "currLayoutType",
+			roomStatus: 'roomStatus',
+			currLayoutType: 'currLayoutType',
+			roomTrophies: "roomTrophies"
+       
     }),
   },
   mounted() {
