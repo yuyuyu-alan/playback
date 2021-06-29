@@ -1,4 +1,3 @@
-import store from "../store";
 class WhiteboardController {
 	constructor() {
 		this.instance = null;
@@ -43,24 +42,30 @@ class WhiteboardController {
         window.CloudHubWBViewPlugin(client, 'defaultWhiteboardBox', viewconfig);
 	}
 
-	initWhiteboard(id) {
-		const {whiteboardClient} = store.state;
-		const config = {
-			wbcfg: {
-				isSync: true,
-				isCanDraw: true,
-				isCanPage: true,
-				isUseKeyboardPage: false,
-				canvasBgColor: '#fff',
-				isDisconnectCleaShapes: false,
-				isAllowDynpptPubVideo: true //动态ppt的视频是否在外部播放
-			},
-			isCreateWbToolBar: true,
-			isCreateDocumentToolBar: true
-		};
-		store.commit("setData", {whiteboardInstance: window.CloudHubWBViewPlugin(whiteboardClient, id, config)});
-		this.listenDynamicPptPubVideo();
+	setWhiteboardLayout(whiteboardDom, status) {
+		const {currLayoutType, whiteboardLayout} = store.state;
+		switch (currLayoutType) {
+			case 'singleToRight':
+			case 'singleToBottom':
+				whiteboardDom.style.left = whiteboardLayout.x + 'px';
+				whiteboardDom.style.top = whiteboardLayout.y + 'px';
+				break;
+			case 'single':
+			case 'square':
+			case 'default':
+				whiteboardDom.style.left = "50%";
+				whiteboardDom.style.transform = "translateX(-50%)";
+				whiteboardDom.style.bottom = "100px";
+				break;
+		}
+		whiteboardDom.style.width = whiteboardLayout.width + 'px';
+		whiteboardDom.style.height = whiteboardLayout.height + 'px';
+		whiteboardDom.style.zIndex = status ? whiteboardLayout.zIndex : -199;
+		// if (whiteboardInstance) {
+		// 	whiteboardInstance.resizeWhiteboard();
+		// }
 	}
+
 }
 
 export default WhiteboardController.getInstance();

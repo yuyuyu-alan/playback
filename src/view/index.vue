@@ -7,11 +7,9 @@
 </template>
 
 <script>
-import Whiteboard from "../components/room/whiteboard/Whiteboard";
 import CloudHubPlayback from "cloudhub-playback-sdk";
 import StreamController from "@/controllers/StreamController";
 import RoomController from "@/controllers/RoomController";
-import UserController from "@/controllers/UserController";
 import WhiteboardController from "@/controllers/WhiteboardController";
 import LayoutController from "../controllers/LayoutController";
 import TeacherPlayer from "../components/room/TeacherPlayer";
@@ -22,7 +20,6 @@ export default {
   components: {
     TeacherPlayer,
     StudentPlayer,
-    Whiteboard,
     test
   },
   data() {
@@ -45,11 +42,11 @@ export default {
     init() {
       if (CloudHubPlayback) {
         CloudHubPlayback.startPlay((room) => {
-          console.log(
-            "==================================",
-            room,
-            "color: yelllow", room.room
-          );
+          // console.log(
+          //   "==================================",
+          //   room,
+          //   "color: yelllow", room.room
+          // );
           // 房间号  CloudHubPlayback.getChannelId()
           this.$store.commit("setData", {
             rtcEngine: CloudHubPlayback.getEngine(),
@@ -59,7 +56,6 @@ export default {
           LayoutController.watchWindowResize();
           StreamController.listen();
           RoomController.listen();
-          UserController.listen();
           WhiteboardController.listen();
         });
       }

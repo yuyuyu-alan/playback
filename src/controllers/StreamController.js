@@ -15,7 +15,6 @@ class StreamController {
   /** 开始监听 */
   listen() {
     this.listenStreamAdded();
-    this.listenStreamMutedAudio();
   }
 
   /** 初始化流 */
@@ -39,26 +38,11 @@ class StreamController {
     rtcEngine.setupRemoteVideo(uid, type, view);
   }
 
-  /** 播放音频 */
-  playAudio(stream) {
-    if (!stream) return false;
-    stream.playAudio({}, (error) => {
-      if (error) {
-        console.log("播放音频失败", stream, error);
-      }
-    });
-  }
-
-  /** 停止播放音频 */
-  unPlayAudio(stream) {
-    if (!stream) return false;
-    stream.unplayAudio();
-  }
-
   /** 远端流添加 */
   listenStreamAdded() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onRemoteVideoStateChanged", (event) => {
+      console.log('===================123======', event)
       const { mediaType, uid } = event;
       const user_type = event.uid.split('_')[0]
       if (user_type == 'teacher') {
@@ -69,18 +53,9 @@ class StreamController {
       } else if (user_type == 'user') { setTimeout(() => {
           const videodom = document.getElementById(`player-${event.uid}`)
           this.playVideo(event.uid, videodom, event.mediaType);
-          // this.playAudio(stream);
         }, 100)
 
       }
-    });
-  }
-
-  /** 远端流音频发生变化 */
-  listenStreamMutedAudio() {
-    const { rtcEngine } = store.state;
-    rtcEngine.on("onRemoteAudioStateChanged", (event) => {
-      console.log("远端流音频变化=", event);
     });
   }
 }

@@ -26,18 +26,6 @@ class RoomController {
     this.listenNetworkStateChanged();
   }
 
-  sendSignalingMessage(id, data, type, isSave = true) {
-    const { rtcEngine } = store.state;
-    const name = id;
-    const toId = window.CloudHubRTC.CONSTANTS.MSG_TO_ALLUSER;
-    if (type === 'publish') {
-      rtcEngine.pubMsg(name, id, toId, data, isSave);
-    } else if (type === 'delete') {
-      rtcEngine.delMsg(name, id, toId, data, isSave);
-    }
-  }
-
-
   /** 监听信令添加*/
   listenPubMsg() {
     const { rtcEngine } = store.state;
@@ -46,15 +34,16 @@ class RoomController {
       console.log(`%c[ < 收到信令 >---${event.msgName}---${JSON.stringify(event.data)} ]`, 'color: red;background-color: black;font-size: 16px');
 
       const { msgName, data } = event;
-      console.log('====白板=', data.whiteboardInfo)
-      if (msgName === "showTrophy") {
+      if(msgName === 'showWhiteboard') { // 显示白板
+        EventBus.$emit("showWhiteboard", true);
+      } else if (msgName === "showTrophy") { // 奖杯相关
         //发送奖杯
-        EventBus.$emit("trophy", data);
+        // EventBus.$emit("trophy", data);
+
       } else if (msgName === "ChangeLayout") {
-        const { data } = event
         //改变布局
         const { currLayoutType } = store.state;
-        if (Number(data.layout) === ConstantController.LAYOUT_TYPE.SINGLE) {
+        if (Number(data.layout) === ConstantController.LAYOUT_TYPE.SINGLE) { // defaule layout
           data.layout =
             currLayoutType === "singleToRight"
               ? ConstantController.LAYOUT_TYPE.SINGLE_TO_RIGHT
@@ -88,7 +77,11 @@ class RoomController {
   listenDelMsg() {
     const { rtcEngine } = store.state;
     rtcEngine.on("onDelMsg", (event) => {
-      console.log("====删除信令=", event);
+      const { msgName } = event;
+      if(msgName === "showWhiteboard") { // 关闭白板
+        EventBus.$emit("showWhiteboard", false);
+
+      }
     });
   }
 
